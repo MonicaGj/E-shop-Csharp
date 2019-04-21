@@ -1,0 +1,10 @@
+D:\sedc\c#\E-shop\E-shop\bin\Debug\E-shop.exe.config
+D:\sedc\c#\E-shop\E-shop\bin\Debug\E-shop.exe
+D:\sedc\c#\E-shop\E-shop\bin\Debug\E-shop.pdb
+D:\sedc\c#\E-shop\E-shop\bin\Debug\Classes.dll
+D:\sedc\c#\E-shop\E-shop\bin\Debug\Classes.pdb
+D:\sedc\c#\E-shop\E-shop\obj\Debug\E-shop.csprojAssemblyReference.cache
+D:\sedc\c#\E-shop\E-shop\obj\Debug\E-shop.csproj.CoreCompileInputs.cache
+D:\sedc\c#\E-shop\E-shop\obj\Debug\E-shop.csproj.CopyComplete
+D:\sedc\c#\E-shop\E-shop\obj\Debug\E-shop.exe
+D:\sedc\c#\E-shop\E-shop\obj\Debug\E-shop.pdb

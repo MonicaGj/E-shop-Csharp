@@ -1,0 +1,6 @@
+D:\sedc\c#\E-shop\Classes\bin\Debug\Classes.dll
+D:\sedc\c#\E-shop\Classes\bin\Debug\Classes.pdb
+D:\sedc\c#\E-shop\Classes\obj\Debug\Classes.csprojAssemblyReference.cache
+D:\sedc\c#\E-shop\Classes\obj\Debug\Classes.csproj.CoreCompileInputs.cache
+D:\sedc\c#\E-shop\Classes\obj\Debug\Classes.dll
+D:\sedc\c#\E-shop\Classes\obj\Debug\Classes.pdb
