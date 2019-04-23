@@ -55,7 +55,8 @@ namespace E_shop
                             }
 
                             Console.WriteLine("1.Order product | 2.Get the state of shoping cart | 3.Back to menu");
-                            if (Console.ReadLine() == "1")
+                            string userChosed = Console.ReadLine();
+                            if (userChosed == "1")
                             {
                                 Console.Clear();
                                 while (true)
@@ -130,21 +131,25 @@ namespace E_shop
                                     else break;
                                 }
                             }
-                            else if(Console.ReadLine() == "2")
+                            else if(userChosed == "2")
                             {
                                
                                 Console.WriteLine("You had ordered:");
+                                Console.ForegroundColor = ConsoleColor.Green;
                                 foreach (var product in UserCart)
                                 {
                                     product.PrintInfo();
                                 }
+                                Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine($"Total price: {TotalPrice(UserCart)}");
+                                Console.ResetColor();
                                 
                             }
 
 
                             Console.WriteLine("1.Back | 2.Exit");
-                            if (Console.ReadLine() == "1") continue;
+                            string backExit = Console.ReadLine();
+                            if (backExit == "1") continue;
                             else break;
                         }
                     }
@@ -170,7 +175,8 @@ namespace E_shop
                             }
                             else  Console.WriteLine("Cant find that product!"); 
                             Console.WriteLine("1.Order that product | 2.Search again | 3.Get the state of shoping cart | 4.Menu");
-                                if (Console.ReadLine() == "1")
+                            string userChoose1 = Console.ReadLine();
+                                if (userChoose1 == "1")
                                 {
                                     Console.WriteLine("Enter the order number of product that you want to order!");
                                     Console.Write("New order: ");
@@ -232,20 +238,23 @@ namespace E_shop
                                         else Console.WriteLine("Cant find that product");
 
                                     }
-
+                                continue;
                                 }
-                                else if (Console.ReadLine() == "2") continue;
-                                else if (Console.ReadLine() == "3")
+                                else if (userChoose1 == "2") continue;
+                                else if (userChoose1 == "3")
                                 {
                                     Console.WriteLine("You had ordered:");
+                                    Console.ForegroundColor = ConsoleColor.Green;
                                     foreach (var product in UserCart)
-                                    {
-                                        product.PrintInfo();
-                                    }
+                                        {
+                                            product.PrintInfo();
+                                        }
+                                    Console.ForegroundColor = ConsoleColor.Red;
                                     Console.WriteLine($"Total price: {TotalPrice(UserCart)}");
-                                    break;
-                                }
-                                else break;
+                                    Console.ResetColor();
+                                    continue;
+                                    }
+                                    else break;
                         }
                     }
                     #endregion
@@ -260,10 +269,12 @@ namespace E_shop
                         }
                         int productId = int.Parse( Console.ReadLine());
                         Product productToRemove = products.Find(x => x.Id == productId);
-                        if(productToRemove != null)
+                        if (productToRemove != null)
                         {
-                             RemoveProduct(UserCart, productToRemove);
+                            RemoveProduct(UserCart, productToRemove);
                         }
+                        else  Console.WriteLine("Cant find that product"); 
+
                         Console.WriteLine("Orders left:");
                         foreach (var product in UserCart)
                         {
