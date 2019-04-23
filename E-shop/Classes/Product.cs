@@ -40,7 +40,18 @@ namespace Classes
             };
             return a;
         }
+        public static Product operator +(Product p, int input)
+        {
+            Product a = new Product
+            {
+                Name = p.Name,
+                Price = p.Price,
+                Quantity = p.Quantity + input,
+                Id = p.Id
 
-        
+            };
+            return a;
+        }
+
     }
 }

@@ -8,7 +8,7 @@ namespace E_shop
 {
     class Program
     {
-       
+
         static void Main(string[] args)
         {
             List<Product> products = new List<Product>()
@@ -27,8 +27,8 @@ namespace E_shop
                 new Product("Cigarettes", 80, 100, 12)
             };
 
-            
-            
+
+
             while (true)
             {
 
@@ -36,22 +36,124 @@ namespace E_shop
                 Console.WriteLine("Please enter your name:");
                 string User = Console.ReadLine();
                 List<Product> UserCart = new List<Product>();
+
                 #endregion
 
                 while (true)
                 {
-                    Console.WriteLine("1.Get the whole list of products | 2.Search product | 3.Create a new order | 4.Get the state of shopping cart | 5.Remove order | 6.Finish the shopping ");
-                
+                    Console.WriteLine("1.Get the whole list of products | 2.Search product | 3.Remove order | 4.Finish the shopping ");
+
+                    #region Get the whole list
                     string UserInput = Console.ReadLine();
-                    if(UserInput == "1")
+                    if (UserInput == "1")
                     {
-                        #region Get the whole list of products
-                        foreach (var product in products)
+                        while (true)
                         {
-                            product.PrintInfo();
+                            foreach (var product in products)
+                            {
+                                product.PrintInfo();
+                            }
+
+                            Console.WriteLine("1.Order product | 2.Get the state of shoping cart | 3.Back to menu");
+                            if (Console.ReadLine() == "1")
+                            {
+                                Console.Clear();
+                                while (true)
+                                {
+                                    foreach (var product in products)
+                                    {
+                                        product.PrintInfo();
+                                    }
+                                    Console.WriteLine("Enter the order number of product that you want to order!");
+                                    Console.Write("New order: ");
+                                    int order = int.Parse(Console.ReadLine());
+                                    var choosedProductExist = UserCart.Any(x => x.Id == order);
+
+                                    if (choosedProductExist)
+                                    {
+                                        Product choosedProduct = products.FirstOrDefault(x => x.Id == order);
+                                        choosedProduct.PrintInfo();
+                                        var choosedProductTrue = UserCart.FirstOrDefault(x => x.Id == order);
+                                        Console.Write("Quantity: ");
+                                        int productQuantity = int.Parse(Console.ReadLine());
+                                        if (productQuantity <= choosedProductTrue.Quantity)
+                                        {
+                                            choosedProductTrue.Quantity +=  productQuantity;
+                                        }
+                                        else Console.WriteLine("We dont have that much.");
+                                        Console.ForegroundColor = ConsoleColor.Green;
+                                        Console.WriteLine($"You ordered {choosedProductTrue.Name}!!");
+                                        Console.ResetColor();
+
+                                        //Apdejtiranje na listata so produkti
+                                        RemoveProduct(products, choosedProduct);
+                                        Product p = choosedProduct - productQuantity;
+                                        if (p.Quantity != 0)
+                                        {
+                                            products.Add(p);
+                                        }
+                                    }
+                                    else if (choosedProductExist == false)
+                                    {
+                                        Product choosedProduct = products.FirstOrDefault(x => x.Id == order);
+                                        if (choosedProduct != null)
+                                        {
+                                            choosedProduct.PrintInfo();
+
+                                            Console.Write("Quantity: ");
+                                            int productQuantity = int.Parse(Console.ReadLine());
+                                            if (productQuantity <= choosedProduct.Quantity)
+                                            {
+                                                UserCart.Add(NewOrder(choosedProduct, productQuantity));
+                                            }
+                                            else Console.WriteLine("We dont have that much.");
+                                            Console.ForegroundColor = ConsoleColor.Green;
+                                            Console.WriteLine($"You ordered {choosedProduct.Name}!!");
+                                            Console.ResetColor();
+                                           
+
+                                            //Apdejtiranje na listata so produkti
+                                            RemoveProduct(products, choosedProduct);
+                                            Product p = choosedProduct - productQuantity;
+                                            if (p.Quantity != 0)
+                                            {
+                                                products.Add(p);
+                                            }
+                                        }
+                                        else Console.WriteLine("Cant find that product");
+
+                                    }
+                                    else Console.WriteLine("Cant find that product");
+                                    Console.WriteLine("1.To continue ordering | 2.To finish ordering");
+                                    if (Console.ReadLine() == "1") continue;
+                                    else if (Console.ReadLine() == "2") break;
+                                    else break;
+                                }
+                            }
+                            else if(Console.ReadLine() == "2")
+                            {
+                               
+                                Console.WriteLine("You had ordered:");
+                                foreach (var product in UserCart)
+                                {
+                                    product.PrintInfo();
+                                }
+                                Console.WriteLine($"Total price: {TotalPrice(UserCart)}");
+                                
+                            }
+
+
+                            Console.WriteLine("1.Back | 2.Exit");
+                            if (Console.ReadLine() == "1") continue;
+                            else break;
                         }
-                        #endregion
                     }
+
+
+
+                    #endregion
+
+                    #region Search product
                     else if (UserInput == "2")
                     {
                         while (true)
@@ -59,80 +161,97 @@ namespace E_shop
                             Console.Write("Search:  ");
                             string UserSearch = Console.ReadLine();
                             List<Product> SearchedProducts = products.Where(x => x.Name.Contains(UserSearch)).ToList();
-                            if (SearchedProducts != null)
+                            if (SearchedProducts != null && UserSearch is string)
                             {
                                 foreach (var product in SearchedProducts)
                                 {
                                     product.PrintInfo();
                                 }
                             }
-                            else Console.WriteLine("Cant find that product!");
-                            Console.WriteLine("1.Search again 2.Back to menu");
-                            if (Console.ReadLine() == "1") continue;
-                            else if (Console.ReadLine() == "2") break;
-                            else break;
+                            else  Console.WriteLine("Cant find that product!"); 
+                            Console.WriteLine("1.Order that product | 2.Search again | 3.Get the state of shoping cart | 4.Menu");
+                                if (Console.ReadLine() == "1")
+                                {
+                                    Console.WriteLine("Enter the order number of product that you want to order!");
+                                    Console.Write("New order: ");
+                                    int order = int.Parse(Console.ReadLine());
+                                    var choosedProductExist = UserCart.Any(x => x.Id == order);
+
+
+                                    if (choosedProductExist)
+                                    {
+                                        Product choosedProduct = products.FirstOrDefault(x => x.Id == order);
+                                        choosedProduct.PrintInfo();
+                                        var choosedProductTrue = UserCart.FirstOrDefault(x => x.Id == order);
+                                        Console.Write("Quantity: ");
+                                        int productQuantity = int.Parse(Console.ReadLine());
+                                        if (productQuantity <= choosedProductTrue.Quantity)
+                                        {
+                                            choosedProductTrue.Quantity += productQuantity;
+                                        }
+                                        else Console.WriteLine("We dont have that much.");
+                                        Console.ForegroundColor = ConsoleColor.Green;
+                                        Console.WriteLine($"You ordered {choosedProductTrue.Name}!!");
+                                        Console.ResetColor();
+
+                                        //Apdejtiranje na listata so produkti
+                                        RemoveProduct(products, choosedProduct);
+                                        Product p = choosedProduct - productQuantity;
+                                        if (p.Quantity != 0)
+                                        {
+                                            products.Add(p);
+                                        }
+                                    }
+                                    else if (choosedProductExist == false)
+                                    {
+                                        Product choosedProduct = products.FirstOrDefault(x => x.Id == order);
+                                        if (choosedProduct != null)
+                                        {
+                                            choosedProduct.PrintInfo();
+
+                                            Console.Write("Quantity: ");
+                                            int productQuantity = int.Parse(Console.ReadLine());
+                                            if (productQuantity <= choosedProduct.Quantity)
+                                            {
+                                                UserCart.Add(NewOrder(choosedProduct, productQuantity));
+                                            }
+                                            else Console.WriteLine("We dont have that much.");
+                                            Console.ForegroundColor = ConsoleColor.Green;
+                                            Console.WriteLine($"You ordered {choosedProduct.Name}!!");
+                                            Console.ResetColor();
+
+
+                                            //Apdejtiranje na listata so produkti
+                                            RemoveProduct(products, choosedProduct);
+                                            Product p = choosedProduct - productQuantity;
+                                            if (p.Quantity != 0)
+                                            {
+                                                products.Add(p);
+                                            }
+                                        }
+                                        else Console.WriteLine("Cant find that product");
+
+                                    }
+
+                                }
+                                else if (Console.ReadLine() == "2") continue;
+                                else if (Console.ReadLine() == "3")
+                                {
+                                    Console.WriteLine("You had ordered:");
+                                    foreach (var product in UserCart)
+                                    {
+                                        product.PrintInfo();
+                                    }
+                                    Console.WriteLine($"Total price: {TotalPrice(UserCart)}");
+                                    break;
+                                }
+                                else break;
                         }
                     }
-                    else if(UserInput == "3")
-                    {
-                          
-                            foreach (var product in products)
-                            {
-                                product.PrintInfo();
-                            }
-                        while (true)
-                        {
-                            Console.WriteLine("Enter the order number of product that you want to order!");
-                            Console.WriteLine("New order: ");
-                            int order = int.Parse(Console.ReadLine());
-                            Product choosedProduct = products.FirstOrDefault(x => x.Id == order);
-                            if (choosedProduct != null)
-                            {
-                                choosedProduct.PrintInfo();
-                                    
-                                Console.Write("Quantity: ");
-                                int productQuantity = int.Parse(Console.ReadLine());
-                                if (productQuantity <= choosedProduct.Quantity)
-                                {
-                                    UserCart.Add(NewOrder(choosedProduct, productQuantity));
-                                }
-                                else Console.WriteLine("We dont have that much.");
-                                Console.WriteLine($"You ordered {choosedProduct.Name}!!");
+                    #endregion
 
-                                //Apdejtiranje na listata so produkti
-                                RemoveProduct(products, choosedProduct);
-                                Product p = choosedProduct - productQuantity;
-                                if(p.Quantity != 0)
-                                {
-                                    products.Add(p);
-                                }
-                                
-                                foreach (var item in products)
-                                {
-                                    item.PrintInfo();
-                                }
-
-                            }
-                            else Console.WriteLine("Cant find that product");     
-                            Console.WriteLine("Press 1 to order product.");
-                            Console.WriteLine("Press 2 to finish ordering.");
-                            if (Console.ReadLine() == "1") continue;
-
-                            else if (Console.ReadLine() == "2") break;
-                            else break;
-                        };
-                    }
-                    else if (UserInput == "4")
-                    {
-                        Console.WriteLine("You had ordered:");
-                        foreach (var product in UserCart)
-                        {
-                            product.PrintInfo();
-                        }
-                        Console.WriteLine($"Total price: {TotalPrice(UserCart)}");
-
-                    }
-                    else if (UserInput == "5")
+                    #region Remove order
+                    else if (UserInput == "3")
                     {
                         Console.WriteLine("Enter the order number of the product that you want to remove:");
                         foreach (var product in UserCart)
@@ -152,17 +271,23 @@ namespace E_shop
                         }
 
                     }
-                    else if (UserInput == "6")
+                    #endregion
+
+                    #region Finish
+                    else if (UserInput == "4")
                     {
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("Shopping finished!");
                         Console.WriteLine(User);
                         foreach (var product in UserCart)
                         {
                             product.PrintInfo();
                         }
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine($"Total price: {TotalPrice(UserCart)}");
+                        Console.ResetColor();
                     }
-
+                    #endregion
 
                     Console.WriteLine("1.Back to menu 2.Exit");
                     if (Console.ReadLine() == "1") continue;
